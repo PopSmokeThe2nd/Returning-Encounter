@@ -4,6 +4,8 @@
 #include "types.h"
 #include "game/vector.h"
 
+class Model;
+
 // An entry shown in NETRICSA, the in-game encyclopedia. Class names come from
 // the game's debug strings. Methods named fn_<address> are placeholders.
 class CcNetricsaObject {
@@ -18,7 +20,7 @@ public:
     virtual void fn_80104844(float value) { m1C = value; }
 
     /* 0x00 */ int mId;
-    /* 0x04 */ void* mModel;
+    /* 0x04 */ Model* mModel;
     /* 0x08 */ VECTOR mPos;
     /* 0x14 */ float m14;
     /* 0x18 */ float m18;
