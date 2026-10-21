@@ -17,16 +17,17 @@ Supported versions:
 Status
 ======
 
-Early setup. Nothing is decompiled yet.
+Early. The build rebuilds a byte-identical `main.dol`, game code compiles with SN ProDG, and the
+first game file (`src/game/NetricsaObject.cpp`) is being decompiled.
 
 What we know about the binary:
 
 | | |
 |---|---|
 | Build string | `Build FINAL.107 (Jan 22 2004 @ 12:04:50)` |
-| Game code compiler | SN Systems ProDG (GCC-based). Exact version not yet identified. |
+| Game code compiler | SN Systems ProDG (GCC 2.95). The runtime reports libsn version 59, one older than ProDG 3.9.3, so the build uses 3.9.3 with `-O2`. |
 | Dolphin SDK | Sep 5 2002 release builds (`0x2301`), compiled by Nintendo with Metrowerks |
-| Symbols | None. No map file or debug info ships on the disc. |
+| Symbols | None ship on the disc. About 710 library functions are named by matching other decompiled games, see [docs/split-map.md](docs/split-map.md#library-names). |
 | Modules | `main.dol` only, no `.rel` files |
 
 Memory layout of `main.dol`:
@@ -66,7 +67,25 @@ functions and 20,000 symbols and recognizes some Dolphin SDK functions (GX, OS) 
 split objects relink into a byte-identical `main.dol`.
 
 Game code is split into 109 groups of whole source files, found from the game's static
-constructors. See [docs/split-map.md](docs/split-map.md) for the layout and what's left to split.
+constructors, plus files found inside those groups. See [docs/split-map.md](docs/split-map.md)
+for the layout and what's left to split.
+
+Compiling game code
+-------------------
+
+Game units are compiled with `ngccc.exe` from SN Systems ProDG, which the build downloads along
+with the Metrowerks compilers (`build/compilers/ProDG/<version>`). Add a unit to the `GameLib`
+in `configure.py` and it gets the ProDG rule. Things to know when writing matching code:
+
+- ProDG is g++ 2.95, so C++ uses the old GNU name mangling (`__16CcNetricsaObjectiRC6VECTOR`,
+  `_$_16CcNetricsaObject` for destructors, `_vt$16CcNetricsaObject` for vtables). Rename a
+  function in `config/G3BE9G/symbols.txt` to its mangled name so objdiff pairs it up.
+- Classes put their vtable pointer after their own fields. Vtable entries are 8 bytes: an offset
+  for `this` and the function pointer.
+- `new` and `delete` are inline in the game (`include/game/memory.h`), so every `delete`
+  expands to the pool and heap code.
+- Functions that aren't identified yet are declared `extern "C"` with their `fn_<address>`
+  name, so calls to them match without inventing a class.
 
 Dependencies
 ============

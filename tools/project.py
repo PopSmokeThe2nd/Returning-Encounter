@@ -300,6 +300,11 @@ def is_windows() -> bool:
 
 # On Windows, we need this to use && in commands
 CHAIN = "cmd /c " if is_windows() else ""
+
+
+# Compiler versions under "ProDG/" are SN Systems ProDG (GCC 2.95), driven by ngccc.exe.
+def is_prodg(version: Union[str, Path]) -> bool:
+    return Path(version).parts[0] == "ProDG"
 # Native executable extension
 EXE = ".exe" if is_windows() else ""
 
@@ -697,6 +702,15 @@ def generate_build_ninja(
     mwld_cmd = f"{wrapper_cmd}{mwld} $ldflags -o $out @$out.rsp"
     mwld_implicit: List[Optional[Path]] = [compilers_implicit or mwld, wrapper_implicit]
 
+    # SN Systems ProDG. ngccc.exe reads sn.ini from the directory named by
+    # SN_NGC_PATH, so point that at the compiler version's directory.
+    prodg_cc = compiler_path / "ngccc.exe"
+    if is_windows():
+        prodg_cc_cmd = f'{CHAIN}set "SN_NGC_PATH=$sn_ngc_path" && {prodg_cc} -c $in -o $out $cflags'
+    else:
+        prodg_cc_cmd = f'SN_NGC_PATH="$sn_ngc_path" {wrapper_cmd}{prodg_cc} -c $in -o $out $cflags'
+    prodg_cc_implicit: List[Optional[Path]] = [compilers_implicit or prodg_cc, wrapper_implicit]
+
     # GNU as
     gnu_as = binutils / f"powerpc-eabi-as{EXE}"
     gnu_as_cmd = (
@@ -751,6 +765,14 @@ def generate_build_ninja(
         description="MWCC $out",
         depfile="$basefile.d",
         deps="gcc",
+    )
+    n.newline()
+
+    n.comment("ProDG build")
+    n.rule(
+        name="prodg_cc",
+        command=prodg_cc_cmd,
+        description="PRODG $out",
     )
     n.newline()
 
@@ -1014,10 +1036,15 @@ def generate_build_ninja(
             cflags = obj.options["cflags"]
             extra_cflags = obj.options["extra_cflags"]
 
+            prodg = is_prodg(obj.options["mw_version"])
+
             # Add appropriate language flag if it doesn't exist already
             # Added directly to the source so it flows to other generation tasks
-            if not any(flag.startswith("-lang") for flag in cflags) and not any(
-                flag.startswith("-lang") for flag in extra_cflags
+            # (ngccc picks the language from the file extension.)
+            if (
+                not prodg
+                and not any(flag.startswith("-lang") for flag in cflags)
+                and not any(flag.startswith("-lang") for flag in extra_cflags)
             ):
                 # Ensure extra_cflags is a unique instance,
                 # and insert into there to avoid modifying shared sets of flags
@@ -1042,7 +1069,11 @@ def generate_build_ninja(
                 "basefile": obj.src_obj_path.with_suffix(""),
             }
 
-            if obj.options["shift_jis"] and obj.options["extab_padding"] is not None:
+            if prodg:
+                build_rule = "prodg_cc"
+                build_implcit = prodg_cc_implicit
+                variables["sn_ngc_path"] = compilers / obj.options["mw_version"]
+            elif obj.options["shift_jis"] and obj.options["extab_padding"] is not None:
                 build_rule = "mwcc_sjis_extab"
                 build_implcit = mwcc_sjis_extab_implicit
                 variables["extab_padding"] = "".join(
@@ -1205,7 +1236,8 @@ def generate_build_ninja(
 
         # Check if all compiler versions exist
         for mw_version in used_compiler_versions:
-            mw_path = compilers / mw_version / "mwcceppc.exe"
+            exe = "ngccc.exe" if is_prodg(mw_version) else "mwcceppc.exe"
+            mw_path = compilers / mw_version / exe
             if config.compilers_path and not os.path.exists(mw_path):
                 sys.exit(f"Compiler {mw_path} does not exist")
 
@@ -1700,7 +1732,8 @@ def generate_objdiff_config(
 
         compiler_version = COMPILER_MAP.get(obj.options["mw_version"])
         if compiler_version is None:
-            print(f"Missing scratch compiler mapping for {obj.options['mw_version']}")
+            if not is_prodg(obj.options["mw_version"]):
+                print(f"Missing scratch compiler mapping for {obj.options['mw_version']}")
         else:
             cflags_str = make_flags_str(all_cflags)
             unit_config["scratch"] = {
