@@ -88,6 +88,17 @@ in `configure.py` and it gets the ProDG rule. Things to know when writing matchi
 - Functions that aren't identified yet are declared `extern "C"` with their `fn_<address>`
   name, so calls to them match without inventing a class.
 
+Without ProDG at hand, [tools/standin](tools/standin/README.md) builds a Linux stand-in: GCC
+2.95.3's `cc1plus` with a small patch, which reproduces ProDG's output for the one unit
+decompiled so far, `src/game/NetricsaObject.cpp`. It's for quick iteration only; the real ProDG
+build and objdiff stay the reference. After a normal build (see [Building](#building)):
+
+```sh
+python tools/standin/build.py
+python tools/standin/compile.py src/game/NetricsaObject.cpp
+python tools/standin/compare.py build/standin/obj/src/game/NetricsaObject.o build/G3BE9G/asm/game/NetricsaObject.s
+```
+
 Dependencies
 ============
 
