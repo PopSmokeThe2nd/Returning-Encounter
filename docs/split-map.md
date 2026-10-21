@@ -110,7 +110,7 @@ this list.
 | `game/group_80100360.cpp` | `0x80100360` | `0x7D0` | Level, LevelSet, Level |
 | `game/group_80100B30.cpp` | `0x80100B30` | `0xDB4` | LevelGfx, GuiA:BombFEBack, GuiA:BombFEGlow |
 | `game/group_801018E4.cpp` | `0x801018E4` | `0x24A0` | InitNetricsa, Netricsa, Netricsa |
-| `game/NetricsaObject.cpp` | `0x80103D84` | `0xAC8` | CcNetricsaObject, CcNetricsaEnemyObject, CcNetricsaItemObject |
+| `game/NetricsaObject.cpp` | `0x80103D84` | `0xAC8` | CcNetricsaObject, CcNetricsaEnemyObject, CcNetricsaItemObject, CcNetricsaEnemyPartsObject (placeholder name); also owns `.rodata` `0x80219468`–`0x802196D8` |
 | `game/group_8010484C.cpp` | `0x8010484C` | `0x32D0` | Memcard Callback Ch:%i Msg:%i |
 | `game/group_80107B1C.cpp` | `0x80107B1C` | `0xBD4` | BombFE, GuiA:BombFEBack, GuiA:BombFEGlow |
 | `game/group_801086F0.cpp` | `0x801086F0` | `0x338` | CheatWeapons, CheatAmmmo, CheatGOD |
