@@ -12,3 +12,9 @@ skip_cfa_ranges:
 # SN Systems debug monitor stub (libsn)
 - start: .text:0x8017BF90
   end: .text:0x8017E350
+
+# The crt0 clears .sbss up to 0x802DC7C4, which is the end of the section and
+# so not inside any section. Leave those instructions as absolute values.
+block_relocations:
+- source: .init:0x8000315C
+- source: .init:0x80003160
