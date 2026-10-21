@@ -1,0 +1,14 @@
+# Serious Sam: Next Encounter (USA, Rev 1) - G3BE9G
+# See config.example.yml in dtk-template for documentation.
+object_base: orig/G3BE9G
+object: sys/main.dol
+hash: 99178f5503e2d51714890c11619518c9ffb07d04
+symbols: config/G3BE9G/symbols.txt
+splits: config/G3BE9G/splits.txt
+
+# Hand-written assembly that the analyzer can't follow
+# (custom r30/r31 link conventions, rfi, self-modifying stubs).
+skip_cfa_ranges:
+# SN Systems debug monitor stub (libsn)
+- start: .text:0x8017BF90
+  end: .text:0x8017E350
