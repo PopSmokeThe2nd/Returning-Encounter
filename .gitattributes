@@ -11,3 +11,6 @@
 
 # decomp-toolkit writes files with LF
 config/**/*.txt  text eol=lf
+
+# The stand-in compiler's patch applies to GCC's LF files
+tools/standin/*.patch text eol=lf

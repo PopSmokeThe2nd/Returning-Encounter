@@ -1,0 +1,108 @@
+ProDG stand-in changes to GCC 2.95.3 (apply with `patch -p1` in the GCC
+source root; tools/standin/build.py applies it automatically).
+
+Changes by the Returning-Encounter project, 2026-10-21: easy_fp_constant()
+in gcc/config/rs6000/rs6000.c, ELIMINABLE_REGS in gcc/config/rs6000/rs6000.h,
+emit_store_flag() in gcc/expmed.c and insn_cost() in gcc/haifa-sched.c are
+changed so that the generated code matches SN Systems ProDG's. Each change
+is marked "ProDG stand-in" in the source.
+
+This patch is a derivative of GCC and, like GCC 2.95.3, is licensed under
+the GNU General Public License, version 2 or later. See
+tools/standin/README.md for what each hunk does and why.
+
+--- a/gcc/config/rs6000/rs6000.c
++++ b/gcc/config/rs6000/rs6000.c
+@@ -809,6 +809,13 @@
+     return 0;
+ #endif
+ 
++  /* ProDG stand-in: SN ProDG loads non-zero FP constants from the constant
++     pool (lis + lfs @l) and never builds them in a GPR.  Setting
++     PRODG_EASY_FP in the environment restores the upstream behaviour.  */
++  if ((mode == SFmode || mode == DFmode) && op != CONST0_RTX (mode)
++      && getenv ("PRODG_EASY_FP") == 0)
++    return 0;
++
+   if (mode == DFmode)
+     {
+       long k[2];
+--- a/gcc/config/rs6000/rs6000.h
++++ b/gcc/config/rs6000/rs6000.h
+@@ -1734,6 +1734,9 @@
+    by making it an eliminable register.  We replace it with itself so that
+    if it isn't needed, then existing uses won't be modified.  */
+ 
++/* ProDG stand-in: the { 30, 30 } entry is removed, so r30 is an ordinary
++   callee-saved register for the allocators, as in SN ProDG's output.  */
++
+ /* This is an array of structures.  Each structure initializes one pair
+    of eliminable registers.  The "from" register number is given first,
+    followed by "to".  Eliminations of the same "from" register are listed
+@@ -1741,8 +1744,7 @@
+ #define ELIMINABLE_REGS				\
+ {{ FRAME_POINTER_REGNUM, STACK_POINTER_REGNUM},	\
+  { ARG_POINTER_REGNUM, STACK_POINTER_REGNUM},	\
+- { ARG_POINTER_REGNUM, FRAME_POINTER_REGNUM},	\
+- { 30, 30} }
++ { ARG_POINTER_REGNUM, FRAME_POINTER_REGNUM} }
+ 
+ /* Given FROM and TO register numbers, say whether this elimination is allowed.
+    Frame pointer elimination is automatically handled.
+--- a/gcc/expmed.c
++++ b/gcc/expmed.c
+@@ -4333,6 +4333,13 @@
+      do LE and GT if branches are expensive since they are expensive on
+      2-operand machines.  */
+ 
++  /* ProDG stand-in: SN ProDG never emits a branch-free integer NE
++     store-flag sequence (no abs/neg-or forms anywhere in the game), so give
++     up on NE here.  Setting PRODG_NE_SCC in the environment restores the
++     upstream behaviour.  */
++  if (code == NE && getenv ("PRODG_NE_SCC") == 0)
++    return 0;
++
+   if (BRANCH_COST == 0
+       || GET_MODE_CLASS (mode) != MODE_INT || op1 != const0_rtx
+       || (code != EQ && code != NE
+--- a/gcc/haifa-sched.c
++++ b/gcc/haifa-sched.c
+@@ -3125,6 +3125,38 @@
+ 	  if (cost < 1)
+ 	    cost = 1;
+ 
++	  /* ProDG stand-in: latency overrides, read from the environment.
++	     With PRODG_FMR1=1 PRODG_STORE=2 PRODG_CMP=1 (what
++	     tools/standin/compile.py sets) the PPC750 schedule matches SN
++	     ProDG's output.  When unset, the upstream costs are used.  */
++
++	  /* PRODG_FMR1=N: FP register copies (fmr) take N cycles.  */
++	  if (getenv ("PRODG_FMR1"))
++	    {
++	      rtx set = single_set (insn);
++	      if (set && GET_CODE (SET_DEST (set)) == REG
++		  && GET_CODE (SET_SRC (set)) == REG
++		  && FP_REGNO_P (REGNO (SET_DEST (set)))
++		  && FP_REGNO_P (REGNO (SET_SRC (set))))
++		cost = atoi (getenv ("PRODG_FMR1"));
++	    }
++	  /* PRODG_STORE=N: stores take N cycles.  */
++	  if (getenv ("PRODG_STORE"))
++	    {
++	      rtx set = single_set (insn);
++	      if (set && GET_CODE (SET_DEST (set)) == MEM)
++		cost = atoi (getenv ("PRODG_STORE"));
++	    }
++	  /* PRODG_CMP=N: integer compares feed their branch in N cycles.  */
++	  if (getenv ("PRODG_CMP"))
++	    {
++	      rtx set = single_set (insn);
++	      if (set && GET_CODE (SET_DEST (set)) == REG
++		  && GET_CODE (SET_SRC (set)) == COMPARE
++		  && GET_MODE (SET_DEST (set)) != CCFPmode)
++		cost = atoi (getenv ("PRODG_CMP"));
++	    }
++
+ 	  INSN_COST (insn) = cost;
+ 	}
+     }
