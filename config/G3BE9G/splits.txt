@@ -8,3 +8,333 @@ Sections:
 	.sdata      type:data align:32
 	.sbss       type:bss align:32
 	.sdata2     type:rodata align:32
+
+game/group_800034A0.cpp:
+	.text       start:0x800034A0 end:0x80004AA0
+
+game/group_80004AA0.cpp:
+	.text       start:0x80004AA0 end:0x80014198
+
+game/group_80014198.cpp:
+	.text       start:0x80014198 end:0x80014684
+
+game/group_80014684.cpp:
+	.text       start:0x80014684 end:0x800178D8
+
+game/group_800178D8.cpp:
+	.text       start:0x800178D8 end:0x800186D0
+
+game/group_800186D0.cpp:
+	.text       start:0x800186D0 end:0x80018E7C
+
+game/group_80018E7C.cpp:
+	.text       start:0x80018E7C end:0x8001B6DC
+
+game/group_8001B6DC.cpp:
+	.text       start:0x8001B6DC end:0x8002BDFC
+
+game/group_8002BDFC.cpp:
+	.text       start:0x8002BDFC end:0x8003049C
+
+game/group_8003049C.cpp:
+	.text       start:0x8003049C end:0x80032BE0
+
+game/group_80032BE0.cpp:
+	.text       start:0x80032BE0 end:0x800345F8
+
+game/group_800345F8.cpp:
+	.text       start:0x800345F8 end:0x80037324
+
+game/group_80037324.cpp:
+	.text       start:0x80037324 end:0x8003D574
+
+game/group_8003D574.cpp:
+	.text       start:0x8003D574 end:0x80043868
+
+game/group_80043868.cpp:
+	.text       start:0x80043868 end:0x8004DA04
+
+game/group_8004DA04.cpp:
+	.text       start:0x8004DA04 end:0x80052F78
+
+game/group_80052F78.cpp:
+	.text       start:0x80052F78 end:0x80056DD8
+
+game/group_80056DD8.cpp:
+	.text       start:0x80056DD8 end:0x800592CC
+
+game/group_800592CC.cpp:
+	.text       start:0x800592CC end:0x8005C99C
+
+game/group_8005C99C.cpp:
+	.text       start:0x8005C99C end:0x8005FCF4
+
+game/group_8005FCF4.cpp:
+	.text       start:0x8005FCF4 end:0x80060FE4
+
+game/group_80060FE4.cpp:
+	.text       start:0x80060FE4 end:0x80062134
+
+game/group_80062134.cpp:
+	.text       start:0x80062134 end:0x80069698
+
+game/group_80069698.cpp:
+	.text       start:0x80069698 end:0x8007D778
+
+game/group_8007D778.cpp:
+	.text       start:0x8007D778 end:0x8007ED88
+
+game/group_8007ED88.cpp:
+	.text       start:0x8007ED88 end:0x800810E8
+
+game/group_800810E8.cpp:
+	.text       start:0x800810E8 end:0x80087234
+
+game/group_80087234.cpp:
+	.text       start:0x80087234 end:0x8008B6D0
+
+game/group_8008B6D0.cpp:
+	.text       start:0x8008B6D0 end:0x8008CDD4
+
+game/group_8008CDD4.cpp:
+	.text       start:0x8008CDD4 end:0x80097824
+
+game/group_80097824.cpp:
+	.text       start:0x80097824 end:0x8009A728
+
+game/group_8009A728.cpp:
+	.text       start:0x8009A728 end:0x8009C8CC
+
+game/group_8009C8CC.cpp:
+	.text       start:0x8009C8CC end:0x800A12DC
+
+game/group_800A12DC.cpp:
+	.text       start:0x800A12DC end:0x800AF438
+
+game/group_800AF438.cpp:
+	.text       start:0x800AF438 end:0x800B766C
+
+game/group_800B766C.cpp:
+	.text       start:0x800B766C end:0x800BEEC8
+
+game/group_800BEEC8.cpp:
+	.text       start:0x800BEEC8 end:0x800C10F4
+
+game/group_800C10F4.cpp:
+	.text       start:0x800C10F4 end:0x800C345C
+
+game/group_800C345C.cpp:
+	.text       start:0x800C345C end:0x800C3D90
+
+game/group_800C3D90.cpp:
+	.text       start:0x800C3D90 end:0x800C8930
+
+game/group_800C8930.cpp:
+	.text       start:0x800C8930 end:0x800C9A40
+
+game/group_800C9A40.cpp:
+	.text       start:0x800C9A40 end:0x800CA6DC
+
+game/group_800CA6DC.cpp:
+	.text       start:0x800CA6DC end:0x800CAE20
+
+game/group_800CAE20.cpp:
+	.text       start:0x800CAE20 end:0x800CCD60
+
+game/group_800CCD60.cpp:
+	.text       start:0x800CCD60 end:0x800CD4F0
+
+game/group_800CD4F0.cpp:
+	.text       start:0x800CD4F0 end:0x800CF9DC
+
+game/group_800CF9DC.cpp:
+	.text       start:0x800CF9DC end:0x800D0BCC
+
+game/group_800D0BCC.cpp:
+	.text       start:0x800D0BCC end:0x800D6064
+
+game/group_800D6064.cpp:
+	.text       start:0x800D6064 end:0x800D7714
+
+game/group_800D7714.cpp:
+	.text       start:0x800D7714 end:0x800DB73C
+
+game/group_800DB73C.cpp:
+	.text       start:0x800DB73C end:0x800DE088
+
+game/group_800DE088.cpp:
+	.text       start:0x800DE088 end:0x800DF6C4
+
+game/group_800DF6C4.cpp:
+	.text       start:0x800DF6C4 end:0x800E1594
+
+game/group_800E1594.cpp:
+	.text       start:0x800E1594 end:0x800E5EA8
+
+game/group_800E5EA8.cpp:
+	.text       start:0x800E5EA8 end:0x800E7C1C
+
+game/group_800E7C1C.cpp:
+	.text       start:0x800E7C1C end:0x800EAA80
+
+game/group_800EAA80.cpp:
+	.text       start:0x800EAA80 end:0x800ED8AC
+
+game/group_800ED8AC.cpp:
+	.text       start:0x800ED8AC end:0x800EF9E8
+
+game/group_800EF9E8.cpp:
+	.text       start:0x800EF9E8 end:0x800F0094
+
+game/group_800F0094.cpp:
+	.text       start:0x800F0094 end:0x800F07F0
+
+game/group_800F07F0.cpp:
+	.text       start:0x800F07F0 end:0x800F0A7C
+
+game/group_800F0A7C.cpp:
+	.text       start:0x800F0A7C end:0x800F0BAC
+
+game/group_800F0BAC.cpp:
+	.text       start:0x800F0BAC end:0x800F1C3C
+
+game/group_800F1C3C.cpp:
+	.text       start:0x800F1C3C end:0x800F1EAC
+
+game/group_800F1EAC.cpp:
+	.text       start:0x800F1EAC end:0x800F2494
+
+game/group_800F2494.cpp:
+	.text       start:0x800F2494 end:0x800F2E14
+
+game/group_800F2E14.cpp:
+	.text       start:0x800F2E14 end:0x800F32F8
+
+game/group_800F32F8.cpp:
+	.text       start:0x800F32F8 end:0x800F3360
+
+game/group_800F3360.cpp:
+	.text       start:0x800F3360 end:0x800F33C8
+
+game/group_800F33C8.cpp:
+	.text       start:0x800F33C8 end:0x800F4568
+
+game/group_800F4568.cpp:
+	.text       start:0x800F4568 end:0x800F52C0
+
+game/group_800F52C0.cpp:
+	.text       start:0x800F52C0 end:0x800F9D2C
+
+game/group_800F9D2C.cpp:
+	.text       start:0x800F9D2C end:0x800FB55C
+
+game/group_800FB55C.cpp:
+	.text       start:0x800FB55C end:0x800FBEE4
+
+game/group_800FBEE4.cpp:
+	.text       start:0x800FBEE4 end:0x800FCB18
+
+game/group_800FCB18.cpp:
+	.text       start:0x800FCB18 end:0x800FCDE4
+
+game/group_800FCDE4.cpp:
+	.text       start:0x800FCDE4 end:0x800FEB94
+
+game/group_800FEB94.cpp:
+	.text       start:0x800FEB94 end:0x80100360
+
+game/group_80100360.cpp:
+	.text       start:0x80100360 end:0x80100B30
+
+game/group_80100B30.cpp:
+	.text       start:0x80100B30 end:0x801018E4
+
+game/group_801018E4.cpp:
+	.text       start:0x801018E4 end:0x80103D84
+
+game/group_80103D84.cpp:
+	.text       start:0x80103D84 end:0x80107B1C
+
+game/group_80107B1C.cpp:
+	.text       start:0x80107B1C end:0x801086F0
+
+game/group_801086F0.cpp:
+	.text       start:0x801086F0 end:0x80108A28
+
+game/group_80108A28.cpp:
+	.text       start:0x80108A28 end:0x80109FC8
+
+game/group_80109FC8.cpp:
+	.text       start:0x80109FC8 end:0x8010A664
+
+game/group_8010A664.cpp:
+	.text       start:0x8010A664 end:0x8010E7F8
+
+game/group_8010E7F8.cpp:
+	.text       start:0x8010E7F8 end:0x8011ABDC
+
+game/group_8011ABDC.cpp:
+	.text       start:0x8011ABDC end:0x801229A0
+
+game/group_801229A0.cpp:
+	.text       start:0x801229A0 end:0x80129ED4
+
+game/group_80129ED4.cpp:
+	.text       start:0x80129ED4 end:0x8012FE10
+
+game/group_8012FE10.cpp:
+	.text       start:0x8012FE10 end:0x8013D2EC
+
+game/group_8013D2EC.cpp:
+	.text       start:0x8013D2EC end:0x80146C9C
+
+game/group_80146C9C.cpp:
+	.text       start:0x80146C9C end:0x8014A160
+
+game/group_8014A160.cpp:
+	.text       start:0x8014A160 end:0x8014E2D8
+
+game/group_8014E2D8.cpp:
+	.text       start:0x8014E2D8 end:0x8014F798
+
+game/group_8014F798.cpp:
+	.text       start:0x8014F798 end:0x80151CD0
+
+game/group_80151CD0.cpp:
+	.text       start:0x80151CD0 end:0x80155E6C
+
+game/group_80155E6C.cpp:
+	.text       start:0x80155E6C end:0x80162FBC
+
+game/group_80162FBC.cpp:
+	.text       start:0x80162FBC end:0x80163E9C
+
+game/group_80163E9C.cpp:
+	.text       start:0x80163E9C end:0x801641C0
+
+game/group_801641C0.cpp:
+	.text       start:0x801641C0 end:0x801650EC
+
+game/group_801650EC.cpp:
+	.text       start:0x801650EC end:0x80166110
+
+game/group_80166110.cpp:
+	.text       start:0x80166110 end:0x80168F08
+
+game/group_80168F08.cpp:
+	.text       start:0x80168F08 end:0x80174F74
+
+game/group_80174F74.cpp:
+	.text       start:0x80174F74 end:0x801754B0
+
+game/group_801754B0.cpp:
+	.text       start:0x801754B0 end:0x80177510
+
+game/group_80177510.cpp:
+	.text       start:0x80177510 end:0x8017B024
+
+game/group_8017B024.cpp:
+	.text       start:0x8017B024 end:0x8017BF88
+
+sn/debug_monitor.s:
+	.text       start:0x8017BF90 end:0x8017E350
