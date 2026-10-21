@@ -337,4 +337,4 @@ game/group_8017B024.cpp:
 	.text       start:0x8017B024 end:0x8017BF88
 
 sn/debug_monitor.s:
-	.text       start:0x8017BF90 end:0x8017E350
+	.text       start:0x8017BF90 end:0x8017E350 align:16
