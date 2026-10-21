@@ -15,8 +15,8 @@ and how reliable each part is.
 
 ## Game code groups
 
-GCC 2.95 emits a source file's static constructor (`_GLOBAL_$I$...`) as the file's last function,
-followed by its static destructor (`_GLOBAL_$D$...`) when there is one. The 108 constructors that
+GCC 2.95 emits a source file's static constructor (`_GLOBAL_.I...`) as the file's last function,
+followed by its static destructor (`_GLOBAL_.D...`) when there is one. The 108 constructors that
 point into game code therefore mark 108 file ends. That gives 109 groups, and each one holds
 **one or more whole source files**. Files without static constructors don't have a marker yet, so the
 larger groups still need to be broken up.
@@ -160,3 +160,9 @@ could be swapped in. Some short functions were checked by hand (for example `DCS
 
 About 710 functions are named this way. Still unnamed: the AX audio library, Bink, the vehicle
 code, and parts of newlib.
+
+Two runtime functions are left unnamed on purpose: `__init_user` (0x801B9AB8) and `__init_cpp`
+(0x801B9AD8). Once they're named, dtk treats the address of the constructor table as the
+linker symbol `_ctors`, which mwld can't produce for this layout (the table is in `.ctors.dtors`,
+not `.ctors`), and the link crashes. The stack and arena addresses OSInit uses come from
+`config/G3BE9G/ldscript.tpl`, which places them where ProDG did.

@@ -78,8 +78,9 @@ with the Metrowerks compilers (`build/compilers/ProDG/<version>`). Add a unit to
 in `configure.py` and it gets the ProDG rule. Things to know when writing matching code:
 
 - ProDG is g++ 2.95, so C++ uses the old GNU name mangling (`__16CcNetricsaObjectiRC6VECTOR`,
-  `_$_16CcNetricsaObject` for destructors, `_vt$16CcNetricsaObject` for vtables). Rename a
-  function in `config/G3BE9G/symbols.txt` to its mangled name so objdiff pairs it up.
+  `_._16CcNetricsaObject` for destructors, `_vt.16CcNetricsaObject` for vtables). ProDG uses `.`
+  where other g++ 2.95 builds use `$`. Rename a function in `config/G3BE9G/symbols.txt` to its
+  mangled name so objdiff pairs it up.
 - Classes put their vtable pointer after their own fields. Vtable entries are 8 bytes: an offset
   for `this` and the function pointer.
 - `new` and `delete` are inline in the game (`include/game/memory.h`), so every `delete`
