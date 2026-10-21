@@ -62,9 +62,11 @@ Known problem areas for analysis:
   absolute value.
 
 With those settings, `ninja` runs decomp-toolkit through the whole DOL. It finds about 7,900
-functions and 20,000 symbols, recognizes some Dolphin SDK functions (GX, OS) by signature, and
-writes one object per section. Linking those objects back into a matching `main.dol` has not
-been verified yet. File-level splits come next.
+functions and 20,000 symbols and recognizes some Dolphin SDK functions (GX, OS) by signature. The
+split objects relink into a byte-identical `main.dol`.
+
+Game code is split into 109 groups of whole source files, found from the game's static
+constructors. See [docs/split-map.md](docs/split-map.md) for the layout and what's left to split.
 
 Dependencies
 ============
