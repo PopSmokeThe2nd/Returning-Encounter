@@ -254,6 +254,7 @@ game/group_801018E4.cpp:
 
 game/NetricsaObject.cpp:
 	.text       start:0x80103D84 end:0x8010484C
+	.rodata     start:0x80219468 end:0x802196D8
 
 game/group_8010484C.cpp:
 	.text       start:0x8010484C end:0x80107B1C

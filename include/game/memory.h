@@ -20,13 +20,18 @@ extern char* lbl_802DADB0;  // Pool end; pointers below it belong to the pool
 extern s32 lbl_802DADA8;    // Free heap bytes
 extern void* lbl_802DADB8;  // Heap
 
+// The pool result is returned straight away, and the heap result has its
+// own variable. With one variable for both results, the pool result is
+// tested and kept in the same register ("mr. r31,r3"), which the game's
+// code doesn't do.
 inline void* operator new(unsigned int size) {
     void* p = fn_80115E14(size);
-    if (p == NULL) {
-        p = fn_801160CC(lbl_802DADB8, size);
-        lbl_802DADA8 -= ((s32*)p)[-6];
+    if (p != NULL) {
+        return p;
     }
-    return p;
+    void* q = fn_801160CC(lbl_802DADB8, size);
+    lbl_802DADA8 -= ((s32*)q)[-6];
+    return q;
 }
 
 inline void operator delete(void* p) {
