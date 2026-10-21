@@ -35,11 +35,12 @@ Memory layout of `main.dol`:
 |---|---|---|---|
 | `.init` | `0x80003100` | `0x3A0` | Startup code |
 | `.text` | `0x800034A0` | `0x1DD8A0` | Game code first, then the libsn debug stub at `0x8017BF90`, then SDK and libraries |
-| `.ctors` / `.dtors` | `0x801E0D40` | `0x260` | GCC-style constructor/destructor tables |
+| `.ctors.dtors` | `0x801E0D40` | `0x260` | GCC-style constructor and destructor tables, merged |
 | `.rodata` | `0x801E0FC0` | `0x573C0` | |
 | `.data` | `0x80238380` | `0x37320` | |
-| `.bss` | `0x8026F6A0` | `0x6D124` | Includes `.sdata` and `.sbss` |
+| `.bss` | `0x8026F6A0` | `0x6A500` | |
 | `.sdata` | `0x802D9BA0` | `0x1F00` | |
+| `.sbss` | `0x802DBAA0` | `0xD24` | |
 | `.sdata2` | `0x802DC7E0` | `0x1360` | |
 
 Known problem areas for analysis:
@@ -47,10 +48,17 @@ Known problem areas for analysis:
 - `0x8017BF90`–`0x8017E350` is a hand-written SN Systems debug monitor. It uses
   non-standard link-register conventions, `rfi`, and self-modifying stubs, so it is excluded
   from control-flow analysis in `config/G3BE9G/config.yml` and will stay as assembly.
-- With that range excluded, decomp-toolkit's analysis finds about 7,900 functions, and it
-  recognizes Dolphin SDK functions such as the GX library automatically. The split step that
-  follows currently crashes (out of memory while applying relocations), so `ninja` does not
-  produce objects yet. This is being worked on.
+- The startup code clears `.sbss` up to `0x802DC7C4`, the address right after the section.
+  That address isn't inside any section, so those two instructions are left as absolute values
+  (`block_relocations` in `config.yml`). Without this, decomp-toolkit 1.8.4 runs out of memory.
+- ProDG's linker merged `.ctors` and `.dtors` into one DOL section (`0x801E0D40`, with `.dtors`
+  starting at `0x801E0F20`). It is named `.ctors.dtors` for now, because decomp-toolkit expects
+  `.ctors` to end at its null terminator.
+
+With those settings, `ninja` runs decomp-toolkit through the whole DOL. It finds about 7,900
+functions and 20,000 symbols, recognizes some Dolphin SDK functions (GX, OS) by signature, and
+writes one object per section. Linking those objects back into a matching `main.dol` has not
+been verified yet. File-level splits come next.
 
 Dependencies
 ============
