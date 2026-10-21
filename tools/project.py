@@ -190,6 +190,9 @@ class ProjectConfig:
         self.custom_build_steps: Optional[Dict[str, List[Dict[str, Any]]]] = (
             None  # Custom build steps, types are ["pre-compile", "post-compile", "post-link", "post-build"]
         )
+        self.sn_small_data: bool = (
+            False  # Rewrite r2-based .sdata2 accesses to r13 after linking (SN ProDG games)
+        )
         self.generate_compile_commands: bool = (
             True  # Generate compile_commands.json for clangd
         )
@@ -730,9 +733,13 @@ def generate_build_ninja(
     n.newline()
 
     n.comment("Generate DOL")
+    elf2dol_cmd = f"{dtk} elf2dol $in $out"
+    if config.sn_small_data:
+        sn_elf2dol = python_lib_dir / "sn_elf2dol.py"
+        elf2dol_cmd = f"$python {sn_elf2dol} {dtk} $in $out"
     n.rule(
         name="elf2dol",
-        command=f"{dtk} elf2dol $in $out",
+        command=elf2dol_cmd,
         description="DOL $out",
     )
     n.newline()

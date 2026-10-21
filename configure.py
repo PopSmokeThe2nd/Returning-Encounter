@@ -249,6 +249,11 @@ cflags_rel = [
 
 config.linker_version = "GC/1.3.2"
 
+# ProDG reaches .sdata2 through r13 like the rest of small data, but mwld
+# resolves it through r2. Rewrite those accesses after linking.
+# See tools/sn_elf2dol.py.
+config.sn_small_data = True
+
 
 # Helper function for Dolphin libraries
 def DolphinLib(lib_name: str, objects: List[Object]) -> Dict[str, Any]:

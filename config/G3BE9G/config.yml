@@ -18,3 +18,7 @@ skip_cfa_ranges:
 block_relocations:
 - source: .init:0x8000315C
 - source: .init:0x80003160
+# The crt0 sets r2 to 0x802F1BA0 (_SDA_BASE_ + 0x10000), which ProDG never
+# uses as a base. mwld would fill in its own _SDA2_BASE_ here.
+- source: .init:0x80003108
+- source: .init:0x8000310C

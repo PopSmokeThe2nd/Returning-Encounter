@@ -55,6 +55,12 @@ Known problem areas for analysis:
   starting at `0x801E0F20`). It is named `.ctors.dtors` for now, because decomp-toolkit expects
   `.ctors` to end at its null terminator.
 
+- ProDG reaches `.sdata2` through `r13`, the same base register as `.sdata`. Its crt0 sets `r2`
+  to `0x802F1BA0` but nothing uses it. mwld follows the EABI and resolves `.sdata2` through
+  `r2`, so `tools/sn_elf2dol.py` rewrites those accesses to `r13` after linking
+  (`config.sn_small_data` in `configure.py`). The `r2` setup in `__start` is kept as an
+  absolute value.
+
 With those settings, `ninja` runs decomp-toolkit through the whole DOL. It finds about 7,900
 functions and 20,000 symbols, recognizes some Dolphin SDK functions (GX, OS) by signature, and
 writes one object per section. Linking those objects back into a matching `main.dol` has not
