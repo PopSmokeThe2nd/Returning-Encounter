@@ -5,6 +5,10 @@ object: sys/main.dol
 hash: 99178f5503e2d51714890c11619518c9ffb07d04
 symbols: config/G3BE9G/symbols.txt
 splits: config/G3BE9G/splits.txt
+# ProDG places the stack 0x20 past the end of .sdata2 and the arena 0x20 past
+# the stack, with no debugger stack. OSInit's references to these are named by
+# dtk's signatures, so the linker script has to produce the same addresses.
+ldscript_template: config/G3BE9G/ldscript.tpl
 
 # Hand-written assembly that the analyzer can't follow
 # (custom r30/r31 link conventions, rfi, self-modifying stubs).

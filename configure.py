@@ -247,6 +247,22 @@ cflags_rel = [
     "-sdata2 0",
 ]
 
+# SN Systems ProDG (GCC 2.95) for the game code. The game's libsn reports
+# version 59 and ProDG 3.9.3 ships libsn 60, so 3.9.3 is the closest compiler
+# in the pack (which also has 3.5, 3.5b140, 3.7 and 3.8.1).
+PRODG_VERSION = "ProDG/3.9.3"
+cflags_game = [
+    "-O2",
+    "-I include",
+    f"-I build/{config.version}/include",
+    f"-DBUILD_VERSION={version_num}",
+    f"-DVERSION_{config.version}",
+]
+if args.debug:
+    cflags_game.extend(["-g", "-DDEBUG=1"])
+else:
+    cflags_game.append("-DNDEBUG=1")
+
 config.linker_version = "GC/1.3.2"
 
 # ProDG reaches .sdata2 through r13 like the rest of small data, but mwld
@@ -262,6 +278,17 @@ def DolphinLib(lib_name: str, objects: List[Object]) -> Dict[str, Any]:
         "mw_version": "GC/1.2.5n",
         "cflags": cflags_base,
         "progress_category": "sdk",
+        "objects": objects,
+    }
+
+
+# Helper function for game code
+def GameLib(lib_name: str, objects: List[Object]) -> Dict[str, Any]:
+    return {
+        "lib": lib_name,
+        "mw_version": PRODG_VERSION,
+        "cflags": cflags_game,
+        "progress_category": "game",
         "objects": objects,
     }
 
@@ -290,12 +317,12 @@ def MatchingFor(*versions):
 config.warn_missing_config = True
 config.warn_missing_source = False
 config.libs = [
-    # No objects are decompiled yet.
-    #
-    # Game code was built with SN Systems ProDG (GCC-based), which isn't one of
-    # the bundled Metrowerks compilers. Game objects will need a custom compiler
-    # rule once the exact ProDG version is identified.
-    #
+    GameLib(
+        "game",
+        [
+            Object(NonMatching, "game/NetricsaObject.cpp"),
+        ],
+    ),
     # The Dolphin SDK (Sep 5 2002, 0x2301) was built by Nintendo with
     # Metrowerks, so SDK objects can use DolphinLib() above.
 ]
